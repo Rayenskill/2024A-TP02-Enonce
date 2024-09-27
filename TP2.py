@@ -14,14 +14,14 @@ Noms et matricules : Rayen Bouriel (2390589), Nom2 (Matricule2)
 
 import csv
 
-csvfile = open("2024A-TP02-Enonce\collection_bibliotheque.csv", newline="")
-collection_biblio = csv.reader(csvfile)
+collection_default = open("collection_bibliotheque.csv", newline="")
+collection_biblio = csv.DictReader(collection_default)
 
 bibliotheque = {}
 
 for row in collection_biblio:
-    bibliotheque[row[3]] = [row[0], row[1], row[2]]
-del bibliotheque["cote_rangement"]
+    bibliotheque[row["cote_rangement"]] = {"titre" : row["titre"], "auteur" : row["auteur"], "date_publication" : row["date_publication"]}
+
 print(f' \n Bibliotheque initiale : {bibliotheque} \n')
 
 
@@ -31,20 +31,19 @@ print(f' \n Bibliotheque initiale : {bibliotheque} \n')
 
 # TODO : Écrire votre code ici
 
-csvfile_2 = open("2024A-TP02-Enonce\\nouvelle_collection.csv", newline="")
-collection_biblio2 = csv.reader(csvfile_2)
+new_collection = open("nouvelle_collection.csv", newline="")
+collection_biblio2 = csv.DictReader(new_collection)
 
 bibliotheque2 = {}
 
 for row in collection_biblio2:
-    bibliotheque2[row[3]] = [row[0], row[1], row[2]]
-del bibliotheque2["cote_rangement"]
+    bibliotheque2[row["cote_rangement"]] = {"titre" : row["titre"], "auteur" : row["auteur"], "date_publication" : row["date_publication"]}
 
 for n in bibliotheque2:
     if n in bibliotheque:
-        print(f"Le livre {n} ---- {bibliotheque2[n][0]} par {bibliotheque2[n][1]} ---- est déjà présent dans la bibliothèque")
+        print(f"Le livre {n} ---- {bibliotheque2[n]["titre"]} par {bibliotheque2[n]["auteur"]} ---- est déjà présent dans la bibliothèque")
     else:
-        print(f"Le livre {n} ---- {bibliotheque2[n][0]} par {bibliotheque2[n][1]} ---- a été ajouté avec succès")
+        print(f"Le livre {n} ---- {bibliotheque2[n]["titre"]} par {bibliotheque2[n]["auteur"]} ---- a été ajouté avec succès")
 
 bibliotheque.update(bibliotheque2)
 
@@ -57,7 +56,7 @@ auteur = "William Shakespeare"
 copy_bibliotheque = bibliotheque.copy()
 
 for i in copy_bibliotheque:
-    if copy_bibliotheque[i][1] == auteur:
+    if copy_bibliotheque[i]["auteur"] == auteur:
         bibliotheque["W" + i] = bibliotheque.pop(i)
 
 
@@ -70,11 +69,21 @@ print(f' \n Bibliotheque avec modifications de cote : {bibliotheque} \n')
 
 # TODO : Écrire votre code ici
 
+emprunts = open("emprunts.csv", newline="")
+gestion_collection = csv.DictReader(emprunts)
 
+emprunt_default = {"emprunts" : "disponible", "date_emprunt" : "ND"}
+livres_emprunts = {}
 
+for livres in bibliotheque:
+    bibliotheque[livres].update(emprunt_default)
 
+for lignes in gestion_collection:
+        if lignes["cote_rangement"] in bibliotheque:
+            livres_emprunts[lignes["cote_rangement"]] = {"emprunts" : "emprenté", "date_emprunt" : lignes["date_emprunt"]}
+            bibliotheque[lignes["cote_rangement"]].update(livres_emprunts[lignes["cote_rangement"]])
 
-
+print(bibliotheque)
 
 ########################################################################################################## 
 # PARTIE 5 : Livres en retard 
@@ -82,7 +91,7 @@ print(f' \n Bibliotheque avec modifications de cote : {bibliotheque} \n')
 
 # TODO : Écrire votre code ici
 
-
+import datetime
 
 
 
