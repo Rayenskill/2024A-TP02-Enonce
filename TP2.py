@@ -3,7 +3,7 @@ TP2 : Système de gestion de livres pour une bibliothèque
 
 Groupe de laboratoire : 01
 Numéro d'équipe :  30
-Noms et matricules : Rayen Bouriel (2390589), Nom2 (Matricule2)
+Noms et matricules : Rayen Bouriel (2390589), Mohamed El amine Djenandar (2365042)
 """
 
 ########################################################################################################## 
