@@ -93,6 +93,26 @@ print(bibliotheque)
 
 import datetime
 
+emprunts = open("emprunts.csv", newline="")
+gestion_collection = csv.DictReader(emprunts)
 
+perdus = {}
+retard = {}
 
+for livre in gestion_collection:
+    date = (datetime.date.today() - datetime.date.fromisoformat(livre["date_emprunt"])).days
+    frais = 2 * date
+    if date > 365:
+        bibliotheque[livre["cote_rangement"]]["livre_perdu"] = "oui"
+    elif date > 30 and frais > 100:
+        bibliotheque[livre["cote_rangement"]]["frais_retard"] = "100$"
+        bibliotheque[livre["cote_rangement"]]["livre_perdu"] = "non"
+    elif date > 30 and frais <= 100:
+        frais = 2 * date
+        bibliotheque[livre["cote_rangement"]]["frais_retard"] = f"{frais}$"
+        bibliotheque[livre["cote_rangement"]]["livre_perdu"] = "non"
+    else:
+        bibliotheque[livre["cote_rangement"]]["livre_perdu"] = "non"
+        bibliotheque[livre["cote_rangement"]]["frais_retard"] = "0$"
 
+print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
