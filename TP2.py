@@ -113,4 +113,4 @@ for livre in gestion_collection:
         bibliotheque[livre["cote_rangement"]]["frais_retard"] = None
 
 print(f' \n Bibliotheque avec ajout des retards et frais : {bibliotheque} \n')
-print(bibliotheque["E004"])
+
